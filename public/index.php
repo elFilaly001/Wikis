@@ -45,5 +45,8 @@ $route->post("/post_register", function () {
 $route->post("/post_Wiki", function () {
     RouteController::post_Wiki();
 });
+$route->post("/search_Wiki", function () {
+    RouteController::search_Wiki();
+});
 
 $route->call($method, $uri);

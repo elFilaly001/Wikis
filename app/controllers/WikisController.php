@@ -57,4 +57,38 @@ class WikisController
         $result = $count->countWikis();
         echo $result;
     }
+
+    public function showWikis()
+    {
+        $all = new WikisModel();
+        if (isset($_POST['keyword'])) {
+            $results = $all->findWiki($_POST['keyword']);
+
+            foreach ($results as $result) :
+?>
+                <div class="col-lg-8 col-sm-12">
+                    <input type="hidden" value="<?= $result["wiki_id"] ?>" />
+                    <div class="about_img mb-3"><img src="assets/img/<?= $result["img"] ?>"></div>
+                    <p class="post_text">Post At : <?= $result["created_at"] ?></p>
+                    <p class="post_text">Post At : <?= $result["cat_name"] ?></p>
+                    <h2 class="most_text"><?= $result["title"] ?></h2>
+                    <p class="lorem_text"><?= $result["content"] ?></p>
+                    <div class="social_icon_main">
+                        <div class="social_icon">
+                            <ul>
+                                <li><a href="#"><img src="assets/img/fb-icon.png"></a></li>
+                                <li><a href="#"><img src="assets/img/twitter-icon.png"></a></li>
+                                <li><a href="#"><img src="assets/img/instagram-icon.png"></a></li>
+                            </ul>
+                        </div>
+                        <div class="read_bt"><a href="#">Read More</a></div>
+                    </div>
+                </div>
+
+                </form>
+
+<?php
+            endforeach;
+        }
+    }
 }

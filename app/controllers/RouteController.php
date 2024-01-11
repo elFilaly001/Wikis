@@ -51,4 +51,9 @@ class RouteController
         $log = new WikisController();
         $log->addWiki();
     }
+    public static function search_Wiki()
+    {
+        $log = new WikisController();
+        $log->showWikis();
+    }
 }

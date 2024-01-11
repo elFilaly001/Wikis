@@ -48,4 +48,13 @@ class WikisModel
         $results = $stmt->fetch(PDO::FETCH_ASSOC);
         return $results["wiki"];
     }
+
+    public function findWiki($keyword)
+    {
+        $sql = "select * from wikis w , categories c where w.cat_id = c.cat_id and w.title like '%$keyword%' and w.deleted_at is NULL;";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
 }

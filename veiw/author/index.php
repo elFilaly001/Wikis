@@ -43,7 +43,7 @@
    <div class="about_section layout_padding">
       <div class="container">
          <div class="row">
-            <div class="col-lg-8 col-sm-12">
+            <div class="col-lg-8 col-sm-12" id="cards">
                <div class="about_img mb-3" style="width:730px ; height:392.188 px;"><img src="assets/img/about-img.png"></div>
                <p class="post_text">Post By : 09/06/2019</p>
                <h2 class="most_text">Most Awesome Blue Lake With Snow <br>Mountain</h2>
@@ -121,6 +121,30 @@
       <script src="assets/js/owl.carousel.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+      <script>
+         function search() {
+            let search_inp = document.getElementById("search_inp");
+            let cards = document.getElementById("cards");
+            $.ajax({
+               method: "POST",
+               url: "/search_Wiki",
+               data: {
+                  keyword: search_inp.value,
+               },
+               // dataType: "json",
+
+               success: function(response) {
+                  //   console.log("the response is :", response);
+                  cards.innerHTML = response;
+               },
+               error: function() {
+                  alert("no user found");
+               },
+            });
+         }
+
+         search();
+      </script>
 </body>
 
 </html>
