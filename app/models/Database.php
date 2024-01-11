@@ -8,14 +8,15 @@ use PDO;
 
 class Database
 {
-    public $dbHost = DB_HOST;
-    public $dbUser = DB_USERNAME;
-    public $dbName = DB_NAME;
-    public $db;
+    public static $db;
+    public static $dbHost = DB_HOST;
+    public static $dbUser = DB_USERNAME;
+    public static $dbName = DB_NAME;
+    public static $dbPWD = DB_PASSWORD;
 
     public static function connect()
     {
-        self::$db = new PDO("mysql:host=" . self::$dbHost . ";dbname=" . self::$dbName . ";username=" . self::$dbUser . "");
+        self::$db = new PDO("mysql:host=" . static::$dbHost . ";dbname=" . self::$dbName, self::$dbUser, self::$dbPWD);
         return self::$db;
     }
 }

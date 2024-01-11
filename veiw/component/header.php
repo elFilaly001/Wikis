@@ -6,20 +6,39 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+            <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+                <div>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/blog">Blog</a>
+                        </li>
+                        <?php
+                        if (!isset($_SESSION["email"])) {
+                        ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">Login</a>
+                            </li>
+                        <?php
+                        } else {
+                        ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Article">New Article</a>
+                            </li>
+                        <?php
+                        }
+                        ?>
+                </div>
+                <div>
+                    <li class="nav-item d-flex">
+                        <input type="text" class="form-control" id="search_inp" style="margin-right: 20px;">
+                        <button style="border: none; background-color: transparent;" id="search_btn"><i class="fa-solid fa-magnifying-glass" style="font-size: 30px;color: white;"></i></button>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/blog">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"><img src="assets/img/serach-icon.png"></a>
-                    </li>
+                </div>
+
+
                 </ul>
             </div>
         </nav>
