@@ -60,6 +60,11 @@ class RouteController
         $log = new WikisController();
         $log->showWikis();
     }
+    public static function search_categ()
+    {
+        $log = new CategoryController();
+        $log->showWikisByCat();
+    }
     public static function post_show_wiki()
     {
         $log = new WikisController();

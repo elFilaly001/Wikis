@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\models\CategoryModel;
 use App\models\TagsModel;
 use PDOException;
 

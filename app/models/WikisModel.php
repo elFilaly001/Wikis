@@ -40,6 +40,14 @@ class WikisModel
         $stmt = $this->db->prepare($sql);
         return $stmt->execute();
     }
+    public function getLastTenWiki()
+    {
+        $sql = "Select * from wikis order by wiki_id desc limit 10";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
     public function countWikis()
     {
         $sql = "Select count(*) as wiki from wikis";
@@ -62,6 +70,14 @@ class WikisModel
         $sql = "select * from wikis w , categories c where w.cat_id = c.cat_id and wiki_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+    public function getwikisTB()
+    {
+        $sql = "select * from wikis w , categories c where w.cat_id = c.cat_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $results;
     }

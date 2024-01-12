@@ -21,6 +21,13 @@ class CategoryModel
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getCategorie($categoryName)
+    {
+        $query = "SELECT * FROM categories c , wikis w where c.cat_id=w.cat_id and c.cat_name like '%$categoryName%' and w.deleted_at is NULL ";
+        $statement = $this->db->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function addCategory($categoryName)
     {

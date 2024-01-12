@@ -3,6 +3,7 @@
 use App\controllers\CategoriesController;
 use App\controllers\TagsController;
 use App\controllers\CategoryController;
+use App\controllers\WikisController;
 
 $tags = new TagsController();
 $category = new CategoryController();
@@ -84,27 +85,19 @@ $category = new CategoryController();
                 <table class="table table-bordered table-striped mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">Image</th>
                             <th scope="col">Title</th>
                             <th scope="col">Content</th>
                             <th scope="col">Creation Date</th>
                             <th scope="col">Last Update</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Tags</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                        </tr>
+                        <?php
+                        $TB = new WikisController();
+                        $TB->showWikisTB();
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -159,6 +152,14 @@ $category = new CategoryController();
             create: false,
             maxItems: 10,
         });
+    </script>
+
+    <script>
+        function getdata(e) {
+            let btn_update = e.currentTarget;
+            let title = document.getElementById("title");
+            console.log(btn_update);
+        }
     </script>
 </body>
 

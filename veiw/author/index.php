@@ -36,6 +36,10 @@
 <body>
    <!-- header section start -->
    <?php
+
+   use App\controllers\CategoryController;
+   use App\controllers\WikisController;
+
    require_once __DIR__ . "/../component/header.php";
    ?>
    <!-- header section end -->
@@ -62,24 +66,10 @@
             <div class="col-lg-4 col-sm-12">
                <div class="newsletter_main">
                   <h1 class="recent_taital">Recent posts</h1>
-                  <div class="recent_box">
-                     <div class="recent_left">
-                        <div class="image_6"><img src="assets/img/img-6.png"></div>
-                     </div>
-                     <div class="recent_right">
-                        <h3 class="consectetur_text">Consectetur adipiscing</h3>
-                        <p class="dolor_text">ipsum dolor sit amet, consectetur adipiscing </p>
-                     </div>
-                  </div>
-                  <div class="recent_box">
-                     <div class="recent_left">
-                        <div class="image_6"><img src="assets/img/img-7.png"></div>
-                     </div>
-                     <div class="recent_right">
-                        <h3 class="consectetur_text">Consectetur adipiscing</h3>
-                        <p class="dolor_text">ipsum dolor sit amet, consectetur adipiscing </p>
-                     </div>
-                  </div>
+                  <?php
+                  $miniwiki = new WikisController();
+                  $miniwiki->showTenWiki();
+                  ?>
                </div>
             </div>
          </div>
@@ -91,11 +81,11 @@
             <h1 class="tag_taital">Tag</h1>
             <div class="tag_bt">
                <ul>
-                  <li class="active"><a href="#">Ectetur</a></li>
-                  <li><a href="#">Onsectetur</a></li>
-                  <li><a href="#">Consectetur</a></li>
-                  <li><a href="#">Consectetur</a></li>
-                  <li><a href="#">Consectetur</a></li>
+                  <li class="category p-2" onclick="searchCateg(event)">All</li>
+                  <?php
+                  $cat = new CategoryController();
+                  $cat->getCateg();
+                  ?>
                </ul>
             </div>
          </div>
@@ -130,6 +120,28 @@
                url: "/search_Wiki",
                data: {
                   keyword: search_inp.value,
+               },
+               // dataType: "json",
+
+               success: function(response) {
+                  //   console.log("the response is :", response);
+                  cards.innerHTML = response;
+               },
+               error: function() {
+                  alert("no Wiki found");
+               },
+            });
+         }
+
+         function searchCateg(e) {
+            let category = e.target.textContent;
+
+            let cards = document.getElementById("cards");
+            $.ajax({
+               method: "POST",
+               url: "/search_tags",
+               data: {
+                  keyword: category == 'All' ? '' : category,
                },
                // dataType: "json",
 

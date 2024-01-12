@@ -37,8 +37,6 @@ $route->get("/forms", function () {
 $route->get("/blog", function () {
     RouteController::blog();
 });
-$route->get("/post_wiki", function () {
-});
 
 
 $route->post("/post_login", function () {
@@ -52,6 +50,9 @@ $route->post("/post_Wiki", function () {
 });
 $route->post("/search_Wiki", function () {
     RouteController::search_Wiki();
+});
+$route->post("/search_tags", function () {
+    RouteController::search_categ();
 });
 
 $route->call($method, $uri);

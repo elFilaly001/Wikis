@@ -12,9 +12,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/blog">Blog</a>
-                        </li>
                         <?php
                         if (!isset($_SESSION["email"])) {
                         ?>
