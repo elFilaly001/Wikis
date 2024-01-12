@@ -34,7 +34,7 @@
                 <div>
                     <li class="nav-item d-flex">
                         <input type="text" class="form-control" id="search_inp" style="margin-right: 20px;">
-                        <button style="border: none; background-color: transparent;" id="search_btn"><i class="fa-solid fa-magnifying-glass" style="font-size: 30px;color: white;"></i></button>
+                        <button style="border: none; background-color: transparent;" id="search_btn" onclick="search()"><i class="fa-solid fa-magnifying-glass" style="font-size: 30px;color: white;"></i></button>
                     </li>
                 </div>
 

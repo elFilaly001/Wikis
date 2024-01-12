@@ -66,11 +66,11 @@ class WikisController
 
             foreach ($results as $result) :
 ?>
-                <div class="col-lg-8 col-sm-12">
-                    <input type="hidden" value="<?= $result["wiki_id"] ?>" />
+                <div>
+                    <input type="hidden" value="<?= $result["wiki_id"] ?>" name="wikiId" />
                     <div class="about_img mb-3"><img src="assets/img/<?= $result["img"] ?>"></div>
                     <p class="post_text">Post At : <?= $result["created_at"] ?></p>
-                    <p class="post_text">Post At : <?= $result["cat_name"] ?></p>
+                    <p class="post_text"> <?= $result["cat_name"] ?></p>
                     <h2 class="most_text"><?= $result["title"] ?></h2>
                     <p class="lorem_text"><?= $result["content"] ?></p>
                     <div class="social_icon_main">
@@ -81,14 +81,29 @@ class WikisController
                                 <li><a href="#"><img src="assets/img/instagram-icon.png"></a></li>
                             </ul>
                         </div>
-                        <div class="read_bt"><a href="#">Read More</a></div>
+                        <div class="read_bt"><a href="/blog?wikiId=<?= $result["wiki_id"] ?>">Read More</a></div>
                     </div>
                 </div>
-
-                </form>
 
 <?php
             endforeach;
         }
+    }
+
+    public function showWiki()
+    {
+        $id = $_GET["wikiId"];
+        $wiki = new WikisModel();
+        $result = $wiki->getwiki($id);
+        echo '<div class="about_section layout_padding">
+                <div class="container">
+                    <div class="row">
+                        <div class="about_img"><img src="assets/img/' . $result[0]["img"] . '"></div>
+                        <p class="post_text">Post At: ' . $result[0]["created_at"] . '</p>
+                        <h2 class="most_text">' . $result[0]["title"] . '</h2>
+                        <p class="lorem_text">' . $result[0]["content"] . '</p>
+                    </div>
+                </div>
+            </div>';
     }
 }

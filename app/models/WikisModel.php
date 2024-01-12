@@ -57,4 +57,12 @@ class WikisModel
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $results;
     }
+    public function getwiki($id)
+    {
+        $sql = "select * from wikis w , categories c where w.cat_id = c.cat_id and wiki_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
 }

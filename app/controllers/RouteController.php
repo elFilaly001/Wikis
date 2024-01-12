@@ -36,6 +36,10 @@ class RouteController
     {
         require __DIR__ . "/../../veiw/admin/tables.php";
     }
+    public static function blog()
+    {
+        require __DIR__ . "/../../veiw/author/blog.php";
+    }
     public static function post_login()
     {
         $log = new loginController();
@@ -55,5 +59,10 @@ class RouteController
     {
         $log = new WikisController();
         $log->showWikis();
+    }
+    public static function post_show_wiki()
+    {
+        $log = new WikisController();
+        $log->showWiki();
     }
 }

@@ -34,6 +34,11 @@ $route->get("/tables", function () {
 $route->get("/forms", function () {
     RouteController::forms();
 });
+$route->get("/blog", function () {
+    RouteController::blog();
+});
+$route->get("/post_wiki", function () {
+});
 
 
 $route->post("/post_login", function () {
