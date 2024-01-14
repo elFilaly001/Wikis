@@ -16,7 +16,11 @@ class loginController
             if ($result["user_Role"] == "Author") {
                 $_SESSION["email"] =  $result['Email'];
                 $_SESSION["user_id"] =  $result['user_id'];
+                $_SESSION["roleuser"] =  $result['user_Role'];
                 header("Location: /");
+            } elseif ($result["user_Role"] == "Admin") {
+                $_SESSION["roleuser"] =  $result['user_Role'];
+                header("Location: /Dash");
             }
         } else {
             header("Location: /login");

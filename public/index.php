@@ -3,6 +3,8 @@
 require __DIR__ . "/../vendor/autoload.php";
 
 use App\controllers\RouteController;
+use App\Core\Middlewares;
+
 use App\Core\Router;
 
 session_start();
@@ -26,13 +28,16 @@ $route->get("/Article", function () {
     RouteController::Article();
 });
 $route->get("/Dash", function () {
-    RouteController::Dashboard();
+    Middlewares::handle() ? RouteController::Dashboard() : die();
 });
 $route->get("/tables", function () {
-    RouteController::tables();
+    Middlewares::handle() ? RouteController::tables() : die();
 });
 $route->get("/blog", function () {
     RouteController::blog();
+});
+$route->get("/denied", function () {
+    RouteController::denied();
 });
 
 
@@ -74,6 +79,9 @@ $route->post("/UpdTag", function () {
 });
 $route->post("/DltTag", function () {
     RouteController::post_Dlt_Tag();
+});
+$route->post("/AdminDltWiki", function () {
+    RouteController::post_Admin_Dlt_Wiki();
 });
 
 $route->call($method, $uri);

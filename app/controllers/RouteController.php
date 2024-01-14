@@ -37,6 +37,10 @@ class RouteController
     {
         require __DIR__ . "/../../veiw/author/blog.php";
     }
+    public static function denied()
+    {
+        require __DIR__ . "/../../veiw/component/denied.php";
+    }
     public static function post_login()
     {
         $log = new loginController();
@@ -106,5 +110,10 @@ class RouteController
     {
         $log = new TagsController();
         $log->deleteTagControl();
+    }
+    public static function post_Admin_Dlt_Wiki()
+    {
+        $log = new WikisController();
+        $log->AdmindeleteWiki();
     }
 }

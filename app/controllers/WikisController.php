@@ -178,6 +178,7 @@ class WikisController
                 <td><?= mb_strimwidth($result["content"], 0, 40, "...");  ?></td>
                 <td><?= $result["created_at"] ?></td>
                 <td><?= $result["updated_at"] ?></td>
+                <td><?= $result["deleted_at"] ?></td>
                 <td><?= $result["cat_name"] ?></td>
                 <td>
                     <button class="btn btn-success mb-1 " type="submit" name="btn_update" data-id="<?= $result["wiki_id"] ?>" id="btn_update" onclick="getdata(event)"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -234,5 +235,12 @@ class WikisController
         $wiki = new WikisModel();
         $wiki->UserdeleteWiki($id);
         header("Location: /Article");
+    }
+    public function AdmindeleteWiki()
+    {
+        $id = $_POST["wiki_id"];
+        $wiki = new WikisModel();
+        $wiki->deleteWiki($id);
+        header("Location: /Dash");
     }
 }
