@@ -25,7 +25,7 @@ $route->get("/register", function () {
     RouteController::Register();
 });
 $route->get("/Article", function () {
-    RouteController::Article();
+    Middlewares::handleGuest() ? RouteController::Article() : die();
 });
 $route->get("/Dash", function () {
     Middlewares::handle() ? RouteController::Dashboard() : die();

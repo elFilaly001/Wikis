@@ -89,6 +89,7 @@ $category = new CategoryController();
                             <th scope="col">Content</th>
                             <th scope="col">Creation Date</th>
                             <th scope="col">Last Update</th>
+                            <th scope="col">Deleted By Admin</th>
                             <th scope="col">Category</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -106,6 +107,7 @@ $category = new CategoryController();
         <div class="container">
             <form action="/post_Wiki" method="post" enctype="multipart/form-data">
 
+                <input type="hidden" id="wiki_id" name="wiki_id">
                 <label for="exampleForm2" class="mb-3">Title</label>
                 <input type="text" id="title" class="form-control mb-4" name="Titre">
 
@@ -163,6 +165,7 @@ $category = new CategoryController();
         function getdata(e) {
             let btn_update = e.currentTarget.dataset.id;
             let inpID = document.getElementById("inpID").value;
+            let inpwiki_ID = document.getElementById("wiki_id");
             let title = document.getElementById("title");
             let tiny = document.getElementById("tiny");
             let file = document.getElementById("img");
@@ -177,24 +180,13 @@ $category = new CategoryController();
                 },
 
                 success: function(res) {
-                    console.log(res[0]);
-
-                    // for (i = 0; i < res.lenght; i++) {
-                    //     tags.value = res[i].tag_name;
-                    // }
-
-                    for (var i = 0; i < res.length; i++) {
-                        var tagId = res[i].tag_name; // Adjust property name as needed
-                        var option = tags.querySelector('option[value="' + res[i].tag_id + '"]');
-
-                    }
-
+                    console.log(res.wiki_id);
                     title.value = res.title;
                     tinymce.get('tiny').setContent(res.content);
                     Category.value = res.cat_id;
                     $sb_btn_Update.show();
                     $sb_btn_Add.hide();
-
+                    inpwiki_ID.value = res.wiki_id;
                 }
             })
         }

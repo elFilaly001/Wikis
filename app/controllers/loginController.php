@@ -20,6 +20,7 @@ class loginController
                 header("Location: /");
             } elseif ($result["user_Role"] == "Admin") {
                 $_SESSION["roleuser"] =  $result['user_Role'];
+                $_SESSION["user_id"] =  $result['user_id'];
                 header("Location: /Dash");
             }
         } else {

@@ -16,4 +16,13 @@ class Middlewares
             return true;
         }
     }
+    public static function handleGuest()
+    {
+        if (!isset($_SESSION['roleuser']) || $_SESSION["roleuser"] = '') {
+            header("Location: /login");
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

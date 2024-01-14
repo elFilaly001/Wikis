@@ -54,7 +54,12 @@ class RouteController
     public static function post_Wiki()
     {
         $log = new WikisController();
-        $log->addWiki();
+        if (isset($_POST["Add_wiki"])) {
+            $log->addWiki();
+        } elseif (isset($_POST["Update"])) {
+
+            $log->updateWiki();
+        }
     }
     public static function search_Wiki()
     {

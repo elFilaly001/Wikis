@@ -44,7 +44,7 @@ class TagsController
         $tagModel = new TagsModel();
         $results = $tagModel->getTags();
         foreach ($results as $result) {
-            echo " <option value='{$result['tag_id']}'>{$result['tag_name']}</option>";
+            echo " <option value='{$result['tag_id']}' Selected>{$result['tag_name']}</option>";
         }
     }
 

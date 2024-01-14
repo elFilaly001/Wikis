@@ -21,25 +21,12 @@ class WikisModel
         $stmt = $this->db->prepare($sql);
         return  $stmt->execute([$title, $content, $img, $user_id, $cat_id]);
     }
-    public function updateWiki($wiki_id, $title, $content, $user_id, $cat_id, $img = "NULL")
+    public function updateWiki($title, $content, $img, $user_id, $cat_id, $wiki_id)
     {
-        $sql = "UPDATE wikis SET title=?, content=?";
-
-        if ($img != "NULL") {
-            $sql .= ", img=?";
-        }
-
-        $sql .= ", user_id=?, cat_id=?, updated_at=CURRENT_TIMESTAMP WHERE wiki_id=?";
+        $sql = "UPDATE wikis SET title=?, content=?, img=?, user_id=?, cat_id=?, updated_at=CURRENT_TIMESTAMP WHERE wiki_id=?";
 
         $stmt = $this->db->prepare($sql);
-
-
-        if ($img != "NULL") {
-            $stmt->bindParam("ssssssi", $title, $content, $img, $user_id, $cat_id, $wiki_id, $wiki_id);
-        } else {
-            $stmt->bindParam("sssssi", $title, $content, $user_id, $cat_id, $wiki_id);
-        }
-        return $stmt->execute();
+        return $stmt->execute([$title, $content, $img, $user_id, $cat_id, $wiki_id]);
     }
 
     public function deleteWiki($wiki_id)
@@ -94,7 +81,15 @@ class WikisModel
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $results;
     }
-    public function getwikisTB()
+    public function getwikisTB($user)
+    {
+        $sql = "select * from wikis w , categories c where w.cat_id = c.cat_id and w.user_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$user]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+    public function getwikisAdTB()
     {
         $sql = "select * from wikis w , categories c where w.cat_id = c.cat_id";
         $stmt = $this->db->prepare($sql);
