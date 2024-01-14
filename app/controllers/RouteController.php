@@ -28,10 +28,7 @@ class RouteController
     {
         require __DIR__ . "/../../veiw/admin/index.php";
     }
-    public static function forms()
-    {
-        require __DIR__ . "/../../veiw/admin/forms.php";
-    }
+
     public static function tables()
     {
         require __DIR__ . "/../../veiw/admin/tables.php";
@@ -69,5 +66,45 @@ class RouteController
     {
         $log = new WikisController();
         $log->showWiki();
+    }
+    public static function post_get_wiki()
+    {
+        $log = new WikisController();
+        $log->getWikiId();
+    }
+    public static function post_delete_wiki()
+    {
+        $log = new WikisController();
+        $log->deleteWiki();
+    }
+    public static function post_add_Cat()
+    {
+        $log = new CategoryController();
+        $log->createCategoryControl();
+    }
+    public static function post_Dlt_cat()
+    {
+        $log = new CategoryController();
+        $log->deleteCategoryControl();
+    }
+    public static function post_Upd_Cat()
+    {
+        $log = new CategoryController();
+        $log->updateCategoryControl();
+    }
+    public static function post_Add_Tag()
+    {
+        $log = new TagsController();
+        $log->createTagControl();
+    }
+    public static function post_Upd_Tag()
+    {
+        $log = new TagsController();
+        $log->updateTagControl();
+    }
+    public static function post_Dlt_Tag()
+    {
+        $log = new TagsController();
+        $log->deleteTagControl();
     }
 }

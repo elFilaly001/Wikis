@@ -114,7 +114,7 @@ $category = new CategoryController();
                     <textarea id="tiny" name="Article"></textarea>
                 </div>
                 <label class="mb-3">Article's image</label>
-                <input type="file" id="title" class="form-control mb-4" name="ArticleImg">
+                <input type="file" id="img" class="form-control mb-4" name="ArticleImg">
 
                 <label class="mb-3">Tags</label>
                 <select id="input-tags2" class="mb-3" autocomplete="off" name="Tags[]">
@@ -131,7 +131,8 @@ $category = new CategoryController();
                     ?>
                 </select>
                 <br>
-                <button type="submit" class="btn btn-primary mb-5" name="Add_wiki">Add Wiki</button>
+                <button type="submit" class="btn btn-primary mb-5" id="btnAdd" name="Add_wiki">Add Wiki</button>
+                <button type="submit" class="btn btn-danger mb-5" id="btnUpd" style="display: none;" name="Update">Update Wiki</button>
             </form>
         </div>
     </div>
@@ -144,6 +145,7 @@ $category = new CategoryController();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/tom-select.default.css">
     <script src="/js/tom-select.complete.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         var settings = {};
         new TomSelect('#input-tags2', {
@@ -155,11 +157,52 @@ $category = new CategoryController();
     </script>
 
     <script>
+        let $sb_btn_Update = $("#btnUpd");
+        let $sb_btn_Add = $("#btnAdd");
+
         function getdata(e) {
-            let btn_update = e.currentTarget;
+            let btn_update = e.currentTarget.dataset.id;
+            let inpID = document.getElementById("inpID").value;
             let title = document.getElementById("title");
-            console.log(btn_update);
+            let tiny = document.getElementById("tiny");
+            let file = document.getElementById("img");
+            let tags = document.getElementById("input-tags2");
+            let Category = document.getElementById("Category");
+
+            $.ajax({
+                method: "POST",
+                url: "/getWiki",
+                data: {
+                    ID: btn_update,
+                },
+
+                success: function(res) {
+                    console.log(res[0]);
+
+                    // for (i = 0; i < res.lenght; i++) {
+                    //     tags.value = res[i].tag_name;
+                    // }
+
+                    for (var i = 0; i < res.length; i++) {
+                        var tagId = res[i].tag_name; // Adjust property name as needed
+                        var option = tags.querySelector('option[value="' + res[i].tag_id + '"]');
+
+                    }
+
+                    title.value = res.title;
+                    tinymce.get('tiny').setContent(res.content);
+                    Category.value = res.cat_id;
+                    $sb_btn_Update.show();
+                    $sb_btn_Add.hide();
+
+                }
+            })
         }
+
+        $sb_btn_Update.click(() => {
+            $sb_btn_Update.hide();
+            $sb_btn_Add.show();
+        })
     </script>
 </body>
 

@@ -8,14 +8,14 @@ class CategoryController
 {
     public function createCategoryControl()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $categoryName = $_POST["categoryName"] ?? '';
-            if (!empty($categoryName)) {
-                $categoryModel = new CategoryModel();
-                return $categoryModel->addCategory($categoryName);
-            }
+        $categoryName = $_POST["categoryName"] ?? '';
+        if (!empty($categoryName)) {
+            $categoryModel = new CategoryModel();
+            $categoryModel->addCategory($categoryName);
+            header("Location: /tables");
         }
     }
+
 
     public function getCategoryControl()
     {
@@ -32,6 +32,21 @@ class CategoryController
         $results = $tagModel->getCategories();
         foreach ($results as $result) {
             echo "<li class='categoty p-2' onclick='searchCateg(event)'>{$result['cat_name']}</li>";
+        }
+    }
+    public function getCategAdmn()
+    {
+        $tagModel = new CategoryModel();
+        $results = $tagModel->getCategories();
+        foreach ($results as $result) {
+            echo "<tr>
+            <td id='name_cat'>{$result['cat_name']}</td>
+            <td><button class='btn btn-success mb-1 ' type='submit' name='btn_update' data-id='{$result['cat_id']}' id='btn_update' onClick='UpdateShow(event)' ><i class='fa-solid fa-pen-to-square'></i></button>
+            <form action='DltCateg' method='post'>
+                <input type='hidden' value=' {$result['cat_id']} ' name='Cat_inp_id' id='inpID'>
+                <button class='btn btn-danger' type='submit' name='btn_delete'><i class='fa-solid fa-trash'></i></button>
+            </form></td>
+        </tr>";
         }
     }
     public function showWikisByCat()
@@ -68,24 +83,27 @@ class CategoryController
 
     public function updateCategoryControl()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $categoryId = $_POST["categoryId"] ?? '';
-            $newCategoryName = $_POST["newCategoryName"] ?? '';
-            if (!empty($categoryId) && !empty($newCategoryName)) {
-                $categoryModel = new CategoryModel();
-                return $categoryModel->updateCategory($categoryId, $newCategoryName);
-            }
+        $categoryId = $_POST["categoryId"] ?? '';
+        $newCategoryName = $_POST["categoryNameUpd"] ?? '';
+        if (!empty($categoryId) && !empty($newCategoryName)) {
+            $categoryModel = new CategoryModel();
+            $categoryModel->updateCategory($categoryId, $newCategoryName);
+            header("Location: /tables");
+        } else {
+            header("Location: /tables");
         }
     }
 
     public function deleteCategoryControl()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $categoryId = $_POST["categoryId"] ?? '';
-            if (!empty($categoryId)) {
-                $categoryModel = new CategoryModel();
-                return $categoryModel->deleteCategory($categoryId);
-            }
+
+        $categoryId = $_POST["Cat_inp_id"];
+        if (!empty($categoryId)) {
+            $categoryModel = new CategoryModel();
+            $categoryModel->deleteCategory($categoryId);
+            header("Location: /tables");
+        } else {
+            header("Location: /tables");
         }
     }
 

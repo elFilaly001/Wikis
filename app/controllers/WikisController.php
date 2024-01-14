@@ -50,6 +50,48 @@ class WikisController
             }
         }
     }
+    public function update()
+    {
+        $wiki = new WikisModel();
+        if (isset($_POST['Add_wiki'])) {
+            $Titre = $_POST['Titre'];
+            $article =  $_POST['Article'];
+            $Category =  $_POST['Category'];
+            $Tags =  $_POST['Tags'];
+            $image_name = $_FILES['ArticleImg']['name'];
+            $image_temp = $_FILES['ArticleImg']['tmp_name'];
+            $image_type = $_FILES['ArticleImg']['type'];
+            $image_size = $_FILES['ArticleImg']['size'];
+            $image_error = $_FILES['ArticleImg']['error'];
+            $allowed = array('jpg', 'png', 'jpeg');
+            $image = explode('.', $image_name);
+            $image_ext = strtolower(end($image));
+            if ($image_error == 4) {
+                echo "file is not uploaded";
+            } else if ($image_size) {
+                if (in_array($image_ext, $allowed)) {
+                    $art_img = uniqid() . $image_name;
+                    move_uploaded_file($image_temp, $_SERVER['DOCUMENT_ROOT'] . '/assets/img/' . $art_img);
+                    $wikis = $wiki->addWiki($Titre, $article, $art_img, $_SESSION['user_id'], $Category);
+                    $getLastWiki = $wiki->getLastWiki();
+                    if (isset($Tags)) {
+                        $tag = new TagsModel();
+                        $wikitag = new WikisTagsModel();
+                        for ($i = 0; $i < count($Tags); $i++) {
+                            $wikitag->linkTagToWiki($Tags[$i], $getLastWiki);
+                        }
+                    }
+                    if ($wikis) {
+                        header('Location: /Article');
+                    }
+                } else {
+                    echo "file is not valid you need this extention ('jpg' , 'png' , 'jfif')";
+                }
+            } else {
+                echo "size to file is too heigh to upload";
+            }
+        }
+    }
 
     public function countWikis()
     {
@@ -139,13 +181,58 @@ class WikisController
                 <td><?= $result["cat_name"] ?></td>
                 <td>
                     <button class="btn btn-success mb-1 " type="submit" name="btn_update" data-id="<?= $result["wiki_id"] ?>" id="btn_update" onclick="getdata(event)"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <form>
-                        <input type="hidden" value="<?= $result["wiki_id"] ?>" name="wiki_id">
+                    <form action="/UserDltWiki" method="post">
+                        <input type="hidden" value="<?= $result["wiki_id"] ?>" name="wiki_id" id="inpID">
                         <button class="btn btn-danger" type="submit" name="btn_delete"><i class="fa-solid fa-trash"></i></button>
                     </form>
+
+                </td>
+            </tr>
+        <?php
+        endforeach;
+    }
+    public function showWikisAdminTB()
+    {
+        $wiki = new WikisModel();
+        $results = $wiki->getwikisTB();
+        foreach ($results as $result) :
+        ?>
+            <tr>
+                <th scope="row"><?= $result["title"] ?></th>
+                <td><?= mb_strimwidth($result["content"], 0, 40, "...");  ?></td>
+                <td><?= $result["created_at"] ?></td>
+                <td><?= $result["updated_at"] ?></td>
+                <td><?= $result["deleted_at"] ?></td>
+                <td><?= $result["cat_name"] ?></td>
+                <td>
+                    <form action="/AdminDltWiki" method="post">
+                        <input type="hidden" value="<?= $result["wiki_id"] ?>" name="wiki_id" id="inpID">
+                        <button class="btn btn-danger" type="submit" name="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                    </form>
+
                 </td>
             </tr>
 <?php
         endforeach;
+    }
+
+    public function getWikiId()
+    {
+        $id = $_POST["ID"];
+        $wiki = new WikisModel();
+        $results = $wiki->getWikiById($id);
+        $Tags = new TagsModel;
+        $results += $Tags->getTagsBywikiId($id);
+        $res = json_encode($results);
+        header("content-type: application/json");
+        echo $res;
+    }
+
+    public function deleteWiki()
+    {
+        $id = $_POST["wiki_id"];
+        $wiki = new WikisModel();
+        $wiki->UserdeleteWiki($id);
+        header("Location: /Article");
     }
 }

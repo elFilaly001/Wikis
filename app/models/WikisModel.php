@@ -21,15 +21,36 @@ class WikisModel
         $stmt = $this->db->prepare($sql);
         return  $stmt->execute([$title, $content, $img, $user_id, $cat_id]);
     }
-    public function updateWiki($wiki_id, $title, $content, $img, $user_id, $cat_id)
+    public function updateWiki($wiki_id, $title, $content, $user_id, $cat_id, $img = "NULL")
     {
-        $sql = "UPDATE wikis SET title=?, content=?, img=?, user_id=?, cat_id=?, updated_at=CURRENT_TIMESTAMP WHERE wiki_id=?";
+        $sql = "UPDATE wikis SET title=?, content=?";
+
+        if ($img != "NULL") {
+            $sql .= ", img=?";
+        }
+
+        $sql .= ", user_id=?, cat_id=?, updated_at=CURRENT_TIMESTAMP WHERE wiki_id=?";
+
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$title, $content, $img, $user_id, $cat_id, $wiki_id]);
+
+
+        if ($img != "NULL") {
+            $stmt->bindParam("ssssssi", $title, $content, $img, $user_id, $cat_id, $wiki_id, $wiki_id);
+        } else {
+            $stmt->bindParam("sssssi", $title, $content, $user_id, $cat_id, $wiki_id);
+        }
+        return $stmt->execute();
     }
+
     public function deleteWiki($wiki_id)
     {
         $sql = "UPDATE wikis SET deleted_at=CURRENT_TIMESTAMP WHERE wiki_id=?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$wiki_id]);
+    }
+    public function UserdeleteWiki($wiki_id)
+    {
+        $sql = "delete from wikis WHERE wiki_id=?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$wiki_id]);
     }
@@ -79,6 +100,14 @@ class WikisModel
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+    public function getWikiById($id)
+    {
+        $sql = "SELECT * FROM wikis w, categories c WHERE w.cat_id = c.cat_id  AND w.wiki_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        $results = $stmt->fetch(PDO::FETCH_ASSOC);
         return $results;
     }
 }

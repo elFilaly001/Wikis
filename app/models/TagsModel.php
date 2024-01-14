@@ -71,4 +71,12 @@ class TagsModel
         $results = $stmt->fetch(PDO::FETCH_ASSOC);
         return $results["tag"];
     }
+    public function getTagsBywikiId($id)
+    {
+        $sql = "SELECT * FROM wikis_tags w, tags t WHERE w.tag_id=t.tag_id  AND w.wiki_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
 }
