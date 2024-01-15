@@ -27,12 +27,12 @@ class WikisTagsModel
         }
     }
 
-    public function unlinkTagFromWiki($tagId, $wikiId)
+    public function unlinkTagFromWiki($wikiId)
     {
         try {
-            $sql = "DELETE FROM wikis_tags WHERE tag_id = ? AND wiki_id = ?";
+            $sql = "DELETE FROM wikis_tags WHERE wiki_id = ?";
             $stmt = $this->db->prepare($sql);
-            $stmt->execute([$tagId, $wikiId]);
+            $stmt->execute([$wikiId]);
             return $stmt->rowCount();
         } catch (PDOException $e) {
             return $e->getMessage();
@@ -62,6 +62,17 @@ class WikisTagsModel
                     WHERE wikis_tags.tag_id = ?";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$tagId]);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+    public function getTagsByWiki($wikiId)
+    {
+        try {
+            $sql = "SELECT count(*) FROM wikis_tags  WHERE wiki_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$wikiId]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             return $e->getMessage();

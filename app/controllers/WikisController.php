@@ -34,10 +34,10 @@ class WikisController
                     $wikis = $wiki->addWiki($Titre, $article, $art_img, $_SESSION['user_id'], $Category);
                     $getLastWiki = $wiki->getLastWiki();
                     if (isset($Tags)) {
-                        $tag = new TagsModel();
                         $wikitag = new WikisTagsModel();
+                        $getLastWiki = $wiki->getLastWiki();
                         for ($i = 0; $i < count($Tags); $i++) {
-                            $wikitag->linkTagToWiki($Tags[$i], $getLastWiki);
+                            $wikitag->linkTagToWiki($Tags[$i], $getLastWiki["wiki_id"]);
                         }
                     }
                     if ($wikis) {
@@ -60,6 +60,11 @@ class WikisController
                 $Titre = $_POST['Titre'];
                 $article =  $_POST['Article'];
                 $Category =  $_POST['Category'];
+                $tags =  $_POST['Tags'];
+                $tag = new TagsModel();
+                $wikitag = new WikisTagsModel();
+                $countTags = $wikitag->getTagsByWiki($idWiki);
+
                 $image_name = $_FILES['ArticleImg']['name'];
                 $image_temp = $_FILES['ArticleImg']['tmp_name'];
                 $image_type = $_FILES['ArticleImg']['type'];
@@ -75,6 +80,12 @@ class WikisController
                         $art_img = uniqid() . $image_name;
                         move_uploaded_file($image_temp, $_SERVER['DOCUMENT_ROOT'] . '/assets/img/' . $art_img);
                         $wikis = $wiki->updateWiki($Titre, $article, $art_img, $_SESSION['user_id'], $Category, $idWiki);
+                        for ($i = 0; $i < $countTags[0]["count(*)"]; $i++) {
+                            $wikitag->unlinkTagFromWiki($idWiki);
+                        }
+                        for ($i = 0; $i < count($tags); $i++) {
+                            $wikitag->linkTagToWiki($tags[$i], $idWiki);
+                        }
                         if ($wikis) {
                             header('Location: /Article');
                         }
@@ -216,9 +227,12 @@ class WikisController
 
     public function getWikiId()
     {
+        $results = [];
         $id = $_POST["ID"];
         $wiki = new WikisModel();
-        $results = $wiki->getWikiById($id);
+        $results["wiki"] = $wiki->getWikiById($id);
+        $Tags = new TagsModel;
+        $results["tags"] = $Tags->getTagsBywikiId($id);
         $res = json_encode($results);
         header("content-type: application/json");
         echo $res;

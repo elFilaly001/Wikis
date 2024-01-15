@@ -24,6 +24,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/Article">New Article</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Article">logout</a>
+                            </li>
                         <?php
                         }
                         ?>

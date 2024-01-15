@@ -44,7 +44,7 @@ class TagsController
         $tagModel = new TagsModel();
         $results = $tagModel->getTags();
         foreach ($results as $result) {
-            echo " <option value='{$result['tag_id']}' Selected>{$result['tag_name']}</option>";
+            echo " <option value='{$result['tag_id']}'>{$result['tag_name']}</option>";
         }
     }
 
@@ -64,11 +64,16 @@ class TagsController
 
     public function deleteTagControl()
     {
-
-        $tagId = $_POST["tagId"] ?? '';
+        $tagId = $_POST["tagId"];
         $tagModel = new TagsModel();
         $tagModel->deleteTag($tagId);
         header("location: /tables");
+    }
+    public function deleteTagWiki()
+    {
+        $tagId = $_POST["tagId"];
+        $tagModel = new TagsModel();
+        $tagModel->deleteTag($tagId);
     }
 
     public function countTags()

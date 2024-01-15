@@ -38,9 +38,7 @@ class TagsModel
     }
     public function getTagsById($id)
     {
-
         try {
-
             $sql = "SELECT * FROM tags where tag_id = ? ";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$id]);

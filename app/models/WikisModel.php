@@ -46,11 +46,12 @@ class WikisModel
     {
         $sql = "Select wiki_id from wikis order by wiki_id desc limit 1";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute();
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function getLastTenWiki()
     {
-        $sql = "Select * from wikis order by wiki_id desc limit 10";
+        $sql = "Select * from wikis where deleted_at is NULL order by wiki_id desc limit 10";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

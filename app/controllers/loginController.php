@@ -8,7 +8,7 @@ class loginController
 {
     public function login_control()
     {
-        $email = $_POST["email"];
+        $email = htmlspecialchars($_POST["email"]);
         $password = $_POST["password"];
         $login = new LoginModel();
         $result = $login->login($email);

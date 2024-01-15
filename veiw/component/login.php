@@ -20,11 +20,13 @@
             <form action="/post_login" method="POST">
                 <div class="row">
                     <i class="fas fa-user"></i>
-                    <input type="text" name="email" placeholder="Email or Phone" required>
+                    <input type="text" name="email" id="email" placeholder="Email or Phone">
+                    <div class="error"></div>
                 </div>
                 <div class="row">
                     <i class="fas fa-lock"></i>
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" id="password" name="password" placeholder="Password">
+                    <div class="error"></div>
                 </div>
                 <div class="pass"><a href="#">Forgot password?</a></div>
                 <div class="row button">
@@ -35,6 +37,15 @@
             </form>
         </div>
     </div>
+    <script>
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+
+        const isValidEmail = (email) => {
+            const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            return re.test(String(email).toLowerCase());
+        }
+    </script>
 </body>
 
 </html>

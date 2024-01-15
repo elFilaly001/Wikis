@@ -5,6 +5,7 @@ namespace App\controllers;
 
 use App\controllers\loginController;
 use App\controllers\RegisterController;
+use App\models\TagsModel;
 
 class RouteController
 {
@@ -57,7 +58,6 @@ class RouteController
         if (isset($_POST["Add_wiki"])) {
             $log->addWiki();
         } elseif (isset($_POST["Update"])) {
-
             $log->updateWiki();
         }
     }

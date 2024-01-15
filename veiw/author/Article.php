@@ -150,9 +150,9 @@ $category = new CategoryController();
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         var settings = {};
-        new TomSelect('#input-tags2', {
+        var selm = new TomSelect('#input-tags2', {
             plugins: ['remove_button'],
-            persist: false,
+            persist: true,
             create: false,
             maxItems: 10,
         });
@@ -170,7 +170,9 @@ $category = new CategoryController();
             let tiny = document.getElementById("tiny");
             let file = document.getElementById("img");
             let tags = document.getElementById("input-tags2");
+            let options = tags.querySelectorAll("option");
             let Category = document.getElementById("Category");
+            let tagsId = [];
 
             $.ajax({
                 method: "POST",
@@ -180,13 +182,23 @@ $category = new CategoryController();
                 },
 
                 success: function(res) {
-                    console.log(res.wiki_id);
-                    title.value = res.title;
-                    tinymce.get('tiny').setContent(res.content);
-                    Category.value = res.cat_id;
+                    console.log(res["tags"]);
+                    title.value = res["wiki"].title;
+                    tinymce.get('tiny').setContent(res["wiki"].content);
+                    Category.value = res["wiki"].cat_id;
+                    inpwiki_ID.value = res["wiki"].wiki_id;
                     $sb_btn_Update.show();
                     $sb_btn_Add.hide();
-                    inpwiki_ID.value = res.wiki_id;
+                    console.log(options);
+                    for (i = 0; i < res["tags"].length; i++) {
+                        tagsId.push(res["tags"][i]["tag_id"]);
+                    }
+                    for (i = 0; i < options.length; i++) {
+                        if (tagsId.includes(Number(options[i].value))) {
+                            options[i].setAttribute("selected", "selected");
+                        }
+                    }
+                    selm.sync();
                 }
             })
         }
